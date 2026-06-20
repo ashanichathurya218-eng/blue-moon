@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My World ❤️</title>
+
+<style>
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url("9.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+     min-height: 100vh;
+}
+
+/* dark romantic overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.3);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* container */
+#lock, .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* lock screen */
+#lock {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+h1 {
+    color: #ff4d88;
+    text-shadow: 0 0 20px pink;
+}
+
+/* input */
+input {
+    width: 80%;
+    max-width: 250px;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    text-align: center;
+}
+
+/* button */
+button {
+    margin-top: 10px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #ff4d88, #ff8fab);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.5);
+}
+
+/* main */
+.container {
+    display: none;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+    color: white;
+}
+
+/* card glow */
+.card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 15px;
+    box-shadow: 0 0 20px rgba(255,105,180,0.2);
+}
+
+/* images */
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+/* hearts */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 20px;
+    animation: floatUp linear forwards;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* ===== FLOATING BUTTERFLIES ===== */
+.butterfly {
+    position: fixed;
+    bottom: -50px;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 8px rgba(255,192,203,0.8));
+    animation: flyUp linear forwards;
+}
+
+@keyframes flyUp {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-50vh) translateX(30px) rotate(15deg);
+    }
+
+    75% {
+        transform: translateY(-80vh) translateX(-30px) rotate(-15deg);
+    }
+
+    100% {
+        transform: translateY(-120vh) translateX(20px) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* particles */
+.particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: pink;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: floatParticle 10s linear infinite;
+    z-index: 1;
+}
+
+@keyframes floatParticle {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+/* letter */
+#letter {
+    white-space: pre-wrap;
+    color: #faedef;
+    text-shadow: 0 0 10px rgba(253, 149, 164, 0.8);
+    line-height: 1.7;
+    min-height: 120px;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+html, body {
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* IMPORTANT FIX: prevent overlay blocking clicks */
+body::before {
+    pointer-events: none;
+}
+
+/* make sure main is always readable */
+.container {
+    min-height: 100vh;
+}
+
+@media (max-width: 600px) {
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+.slideshow {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- MUSIC (SAFE) -->
+<audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- LOCK -->
+<div id="lock">
+    <h2>Enter Password to open my heart ❤️</h2>
+    <input type="password" id="pass" placeholder="Enter Password">
+    <button onclick="check()">Open 💕</button>
+    <p id="message"></p>
+</div>
+
+<!-- MAIN -->
+<div class="container" id="main">
+
+    <h1>Happy Birthday Handsome 💖</h1>
+
+    <div class="card">
+        <h3>මතක 📸</h3>
+        <div class="slideshow">
+        <img class="slide" src="7.jpeg">
+        <img class="slide"  src="5.jpeg">
+        <img  class="slide" src="6.jpeg">
+        <img class="slide"  src="4.jpeg">
+        <img  class="slide" src="8.jpeg">
+        <img  class="slide" src="11.jpeg">
+        <img  class="slide" src="10.jpeg">
+        <img  class="slide" src="1.jpeg">
+        <img  class="slide" src="3.jpeg">
+        <img  class="slide" src="2.jpeg">
+        </div>
+
+
+    </div>
+
+    <div class="card">
+        <h3> Birthday Wish💌</h3>
+        <button onclick="typeLetter()">Open Letter ❤️</button>
+        <div id="letter"></div>
+    </div>
+
+</div>
+
+<script>
+
+let attempts = 0;
+
+/* FLOATING HEARTS */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+
+    const arr = ["💖","💕","💗","💓","❤️"];
+    heart.innerHTML = arr[Math.floor(Math.random()*arr.length)];
+
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (Math.random()*20+10)+"px";
+    heart.style.animationDuration = (Math.random()*3+4)+"s";
+
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),7000);
+}
+
+/* PARTICLES */
+function createParticle() {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random()*100+"vw";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),10000);
+}
+
+
+/* TYPE LOVE LETTER */
+const text = `
+Happy Birthday මගෙ රත්තරන්❤️
+
+හිතේ තියෙන හැම හීනයක්ම එකින් එක හැබෑ වෙන්න ඕනි. මොන ප්‍රශ්න කරදර ආවත් 
+හැමදේකටම හයියක් වෙලා ඔයා ළගින් ඉන්නම් රත්තරන්.. 
+හැමදාමත් මගේ විතරක්ම වෙලා මං ගාවින් ඉන්න.
+තාත්තා කෙනෙක් වගේ මං ගාවින් ඉන්නවට, 
+මාව බලාගන්නවට, තේරුම් ගන්නවට, 
+නිදහස දෙනවට ගොඩක් පින් ඔයාට.. 
+ආදරෙයි ගොඩාරියක්... බුදු සරණයි මගෙ පණ.. 
+I will always with you,
+today, tomorrow, forever 💖
+ummmmmmmmmmmmmmmmmmmmmmmmmmmahh
+
+මට දෙන්න ලෝබයි නුඹ වෙන කාටවත්..
+ආදරෙන් මා ළඟින් ඉන්න හැමදා ඉතින්...
+
+ඔයාගේ සුදු නෝනාගෙන් ආදරෙන් 🦋❤️
+`;
+
+function typeLetter(){
+    let i=0;
+    const letter=document.getElementById("letter");
+    letter.innerHTML="";
+
+    function typing(){
+        if(i<text.length){
+            letter.innerHTML += text[i];
+            i++;
+            setTimeout(typing,30);
+        }
+    }
+    typing();
+}
+
+function createButterfly() {
+
+    const butterfly = document.createElement("div");
+    butterfly.className = "butterfly";
+
+    const butterflies = ["🦋","🦋","🦋"];
+
+    butterfly.innerHTML =
+        butterflies[Math.floor(Math.random() * butterflies.length)];
+
+    butterfly.style.left = Math.random() * 100 + "vw";
+
+    butterfly.style.fontSize =
+        (Math.random() * 20 + 20) + "px";
+
+    butterfly.style.animationDuration =
+        (Math.random() * 6 + 8) + "s";
+
+    document.body.appendChild(butterfly);
+
+    setTimeout(() => {
+        butterfly.remove();
+    }, 15000);
+}
+
+/* START HEARTS + EFFECTS */
+function startEffects() {
+    setInterval(createHeart, 250);
+
+    if (typeof createParticle === "function") {
+        setInterval(createParticle, 350);
+    }
+
+    setInterval(createButterfly, 2500);
+}
+
+let slideIndex = 0;
+
+function showSlides() {
+    let slides = document.getElementsByClassName("slide");
+
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.opacity = "0";
+    }
+
+    slideIndex++;
+
+    if (slideIndex > slides.length) {
+        slideIndex = 1;
+    }
+
+    slides[slideIndex - 1].style.opacity = "1";
+
+    setTimeout(showSlides, 3500);
+}
+
+/* CHECK PASSWORD */
+function check() {
+    let input = document.getElementById("pass").value.toLowerCase();
+    let msg = document.getElementById("message");
+
+if (input === "sudu nona") {
+
+    document.getElementById("lock").style.display = "none";
+    document.getElementById("main").style.display = "block";
+
+    startEffects();
+    showSlides();
+
+    let music = document.getElementById("bgMusic");
+
+    music.play().catch(error => {
+        console.log(error);
+    });
+
+} else {
+        attempts++;
+
+        msg.innerHTML = "Wrong password 💔";
+
+        // 💡 HINT SYSTEM (NEW)
+        if (attempts === 1) {
+            setTimeout(() => {
+                msg.innerHTML += "<br><br>💡 Hint: ඔයා මට ආදරේට කියන නමක් ඒක ❤️";
+            }, 600);
+        }
+
+        if (attempts >= 2) {
+            setTimeout(() => {
+                msg.innerHTML += "<br>💡's' අකුරෙන් පටන් ගන්නෙ 😉💕";
+            }, 1200);
+        }
+    }
+}
+
+</script>
+ඔයාගේ සුදු නෝනාගෙන් ආදරෙන්
+</body>
+</html>
